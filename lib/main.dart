@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/screens/home_screen.dart';
+
+
+import 'features/auth/home/view/screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
