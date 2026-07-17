@@ -17,7 +17,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Articles>articles=[];
+  List<Articles>articles = [];
+  String? messageError ;
+  bool isLoading = true;
+  @override
+  void initState() {
+    super.initState();
+    fetchNews();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +32,35 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Color(0xff202020),
       appBar: AppBar(
         backgroundColor: Color(0xff1877F2),
-        title: Text('News App', style: Theme.of(context).textTheme.bodyLarge),
+        title: Text('News App', style: Theme
+            .of(context)
+            .textTheme
+            .bodyLarge),
         centerTitle: true,
       ),
-      // body: FutureBuilder(future: Api.getNews(), builder: (context, snapshot) {
+       body: isLoading?Center(child: CircularProgressIndicator()):messageError==null?
+       ListView.builder(
+         itemCount: articles.length,
+         itemBuilder: (context, index) {
+           return ImageItemWidget(
+             image: articles[index].urlToImage ?? dummyImage,
+             title: articles[index].title ?? '',
+             onTap: () {},
+           );
+         },
+       ):Center(child: Text(messageError!)),
+
+
+
+
+
+
+
+
+
+
+
+       //FutureBuilder(future: Api.getNews(), builder: (context, snapshot) {
       //   if(snapshot.connectionState==ConnectionState.waiting) {
       //     return Center(child: CircularProgressIndicator());
       //   }
@@ -38,29 +70,26 @@ class _HomeScreenState extends State<HomeScreen> {
       //   }
       //   List<Articles> data=snapshot.data?.articles??[];
       //
-      //   return ListView.builder(
-      //     itemBuilder: (context, index) {
-      //       return ImageItemWidget(
-      //         image: data[index].urlToImage,
-      //         title: data[index].title,
-      //         onTap: () {},
-      //       );
-      //     },
-      //     itemCount:data.length,
-      //   );
+       // return
       // },)
     );
   }
-  void fetchNews()async{
-    var result=await Api.getNews();
-    switch(result) {
+
+  void fetchNews() async {
+    var result = await Api.getNews();
+    switch (result) {
       case Success<SuccessResponseModel>():
-        articles=result.data?.articles??[];
+        articles = result.data?.articles ?? [];
 
       case Error<SuccessResponseModel>():
-
+        messageError=result.messageError;
     }
+    isLoading=false;
+    setState(() {
 
+    });
+
+  }
 }
 
 
