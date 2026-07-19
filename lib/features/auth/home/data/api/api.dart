@@ -11,7 +11,7 @@ class Api {
 static Future<ResultApi<SuccessResponseModel>>getNews()async{
   try {
     Uri url=Uri.https("newsapi.org","/v2/everything",{
-      "q":"bitcoin",
+      "q":"tesla",
       "apiKey":"f9d690a2fd534d438cf6fd5bd742387d"
     });
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_app/features/auth/home/repository/data_source/home_data_source_imp.dart';
+import 'package:news_app/features/auth/home/repository/repo/home_repo_imp.dart';
 
 
 import '../../../../../core/result_api/result_api.dart';
@@ -32,7 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit()..fetchNews(),
+      create: (context) => HomeCubit(
+        HomeRepoImp(HomeDataSourceImp())
+      )..fetchNews(),
       child: Scaffold(
         backgroundColor: Color(0xff202020),
         appBar: AppBar(
