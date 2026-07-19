@@ -14,11 +14,11 @@ final HomeRepoInterface _repo;
   void fetchNews() async {
     emit(HomeLoading());
     var result = await _repo.getNews();
-    switch (result) {
-      case Success<SuccessResponseModel>():
-        emit(HomeSuccess(result.data?.articles ?? []));
-      case Error<SuccessResponseModel>():
-        emit(HomeError(result.messageError));
-    }
+   switch(result) {
+     case Success<List<Articles>>():
+      emit(HomeSuccess(result.data??[]));
+     case Error<List<Articles>>():
+       emit(HomeError(result.messageError));
+   }
   }
 }

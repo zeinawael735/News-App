@@ -8,5 +8,16 @@ class HomeRepoImp implements HomeRepoInterface{
   final HomeDataSourceInterface _dataSource;
   HomeRepoImp(this._dataSource);
   @override
-  Future<ResultApi<SuccessResponseModel>> getNews()=>_dataSource.getNews();
+  Future<ResultApi<List<Articles>>> getNews()async{
+    final result=  await _dataSource.getNews();
+    switch(result){
+      case Success<SuccessResponseModel>():
+        final newsModel=result.data;
+        List<Articles> listOfArticles=newsModel?.articles??[];
+        final newList=listOfArticles.where((element) => element.urlToImage!=null).toList();
+        return Success<List<Articles>>(newList );
+      case Error<SuccessResponseModel>():
+       return Error<List<Articles>>(result.messageError);
+    }
+  }
 }
